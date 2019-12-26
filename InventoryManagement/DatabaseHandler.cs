@@ -7,7 +7,7 @@ namespace InventoryManagement
 {
     public class DatabaseHandler
     {
-        private string _databasePATH = "database.db";
+        private string _databasePATH = @"..\..\data\database.db";
 
         private int ExecuteWrite(string query, Dictionary<string, object> args)
         {
