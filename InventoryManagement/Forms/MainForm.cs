@@ -147,6 +147,7 @@ namespace InventoryManagement
             }
         }
 
+        // Still on development
         private void btnReport_Click(object sender, EventArgs e)
         {
             DatabaseHandler db = new DatabaseHandler();
