@@ -5,6 +5,7 @@ using InventoryManagement.Forms;
 using System.Data;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace InventoryManagement
 {
@@ -145,21 +146,34 @@ namespace InventoryManagement
         }
 
         // Calls 'GetProducts' method
-        // Still on development
         private void btnReport_Click(object sender, EventArgs e)
         {
-            DatabaseHandler db = new DatabaseHandler();
-
-            using (DataTable table = db.GetProducts())
+            try
             {
-                // Erase all text from the file before writing again
-                System.IO.File.WriteAllText(@"F:\felip\Desktop\test.txt", string.Empty);
+                DatabaseHandler db = new DatabaseHandler();
 
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"F:\felip\Desktop\test.txt", true))
+                using (DataTable table = db.GetProducts())
                 {
-                    Report report = new Report(table);
-                    file.WriteLine(report.GenerateReport(table));
+                    if (!Directory.Exists(@"reports"))
+                    {
+                        Directory.CreateDirectory(@"reports");
+                    }
+
+                    // Erase all text from the file before writing again
+                    System.IO.File.WriteAllText(@"reports\report.txt", string.Empty);
+
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"reports\report.txt", true))
+                    {
+                        Report report = new Report(table);
+                        file.WriteLine(report.GenerateReport(table));
+                    }
                 }
+
+                MessageBox.Show(@"Report generated at 'reports\report.txt'");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, $"Error: {ex.Source}");
             }
         }
 

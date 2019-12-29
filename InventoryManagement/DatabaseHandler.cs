@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 
 namespace InventoryManagement
 {
@@ -10,7 +11,39 @@ namespace InventoryManagement
     /// </summary>
     public class DatabaseHandler
     {
-        private string _databasePATH = @"..\..\data\database.db";
+        private string _databasePATH = "database.db";
+
+        public DatabaseHandler()
+        {
+            if (!File.Exists("database.db"))
+            {
+                CreateDatabase();
+            }
+        }
+
+        public int CreateDatabase()
+        {
+            string sqlCommand = @"BEGIN TRANSACTION;
+                                CREATE TABLE IF NOT EXISTS[ProductTest](
+                                    [idProduct] INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    [code]  TEXT NOT NULL UNIQUE,
+                                    [description]   TEXT NOT NULL,
+                                    [quantity] INTEGER NOT NULL,
+                                    [price] REAL NOT NULL
+                                );
+                                CREATE TABLE IF NOT EXISTS[Product] (
+                                    [idProduct] INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    [code]  TEXT NOT NULL UNIQUE,
+                                    [description]   TEXT NOT NULL,
+                                    [quantity] INTEGER NOT NULL,
+                                    [price] REAL NOT NULL
+                                );
+                                COMMIT;";
+
+            SQLiteConnection.CreateFile("database.db");
+
+            return ExecuteWrite(sqlCommand, new Dictionary<string, object>());
+        }
 
         /// <summary>
         /// Handle all write methods within the database (Create, Update and Delete).
