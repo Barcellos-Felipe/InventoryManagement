@@ -5,10 +5,21 @@ using System.Data.SQLite;
 
 namespace InventoryManagement
 {
+    /// <summary>
+    /// The DatabaseHandler class contains all the CRUD methods.
+    /// </summary>
     public class DatabaseHandler
     {
         private string _databasePATH = @"..\..\data\database.db";
 
+        /// <summary>
+        /// Handle all write methods within the database (Create, Update and Delete).
+        /// </summary>
+        /// <param name="query">The sql query that will be executed whithin the database.</param>
+        /// <param name="args">The arguments that will be passed to the query.</param>
+        /// <returns>
+        /// The number of rows affected by the query.
+        /// </returns>
         private int ExecuteWrite(string query, Dictionary<string, object> args)
         {
             int numberOfRowsAffected;
@@ -31,6 +42,14 @@ namespace InventoryManagement
             return numberOfRowsAffected;
         }
 
+        /// <summary>
+        /// Handle all read methods within the database (GetProducts, GetProductByCode).
+        /// </summary>
+        /// <param name="query">The sql query that will be executed whithin the database.</param>
+        /// <param name="args">The arguments that will be passed to the query.</param>
+        /// <returns>
+        /// The data table retrieved by the query.
+        /// </returns>
         private DataTable ExecuteRead(string query, Dictionary<string, object> args)
         {
             if (string.IsNullOrEmpty(query.Trim()))
@@ -58,6 +77,13 @@ namespace InventoryManagement
             }
         }
 
+        /// <summary>
+        /// Creates a new product inside the database.
+        /// </summary>
+        /// <param name="product">A product object.</param>
+        /// <returns>
+        /// The number of rows affected by the query.
+        /// </returns>
         public int Create (Product product)
         {
             string query = "INSERT INTO ProductTest (code, description, quantity, price) " +
@@ -74,6 +100,13 @@ namespace InventoryManagement
             return ExecuteWrite(query, args);
         }
 
+        /// <summary>
+        /// Delete a product from the database.
+        /// </summary>
+        /// <param name="product">A product object.</param>
+        /// <returns>
+        /// The number of rows affected by the query.
+        /// </returns>
         public int Delete (Product product)
         {
             string query = "DELETE FROM ProductTest WHERE idProduct = @id";
@@ -85,7 +118,17 @@ namespace InventoryManagement
 
             return ExecuteWrite(query, args);
         }
-         
+
+        /// <summary>
+        /// Updates a product from the database.
+        /// </summary>
+        /// <param name="product">A product object.</param>
+        /// <param name="description">The new description</param>
+        /// <param name="quantity">The new quantity</param>
+        /// <param name="price">The new price</param>
+        /// <returns>
+        /// The number of rows affected by the query.
+        /// </returns>
         public int Update (Product product, string description, int quantity, double price)
         {
             string query = "UPDATE productTest " +
@@ -103,6 +146,12 @@ namespace InventoryManagement
             return ExecuteWrite(query, args);
         }
 
+        /// <summary>
+        /// Retrieves all products from the database
+        /// </summary>
+        /// <returns>
+        /// A data table with all products from the database.
+        /// </returns>
         public DataTable GetProducts()
         {
             string query = "SELECT * FROM ProductTest";
@@ -124,6 +173,13 @@ namespace InventoryManagement
             }
         }
 
+        /// <summary>
+        /// Retrieves a product from the database.
+        /// </summary>
+        /// <param name="code">The product's code</param>
+        /// <returns>
+        /// The product object retrieved by the query.
+        /// </returns>
         public Product GetProductByCode(string code)
         {
             string query = "SELECT * FROM ProductTest WHERE code = @code";

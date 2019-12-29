@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using InventoryManagement.Forms;
 using System.Data;
 using System.Collections.Generic;
+using System.Text;
 
 namespace InventoryManagement
 {
@@ -22,6 +23,7 @@ namespace InventoryManagement
             txtPrice.Text = "0.00";
         }
 
+        // Calls 'Create' method
         private void btnAddNew_Click(object sender, EventArgs e)
         {
             if (txtCode.Text == "" || txtDescription.Text == "")
@@ -54,6 +56,7 @@ namespace InventoryManagement
             }   
         }
 
+        // Calls 'GetProductByCode' method
         private void btnSearch_Click(object sender, EventArgs e)
         {
             if (txtCode.Text == "")
@@ -78,6 +81,7 @@ namespace InventoryManagement
             }
         }
 
+        // Calls 'Update' method
         private void btnSaveChanges_Click(object sender, EventArgs e)
         {
             DialogResult userConfirmation;
@@ -109,12 +113,9 @@ namespace InventoryManagement
                     MessageBox.Show(ex.Message, $"Error: {ex.Source}");
                 }
             }
-            else
-            {
-                // pass
-            }
         }
 
+        // Calls 'Delete' method
         private void btnDelete_Click(object sender, EventArgs e)
         {
             DialogResult userConfirmation;
@@ -141,12 +142,9 @@ namespace InventoryManagement
                     MessageBox.Show(ex.Message, $"Error: {ex.Source}");
                 }
             }
-            else
-            {
-                // pass
-            }
         }
 
+        // Calls 'GetProducts' method
         // Still on development
         private void btnReport_Click(object sender, EventArgs e)
         {
@@ -154,17 +152,13 @@ namespace InventoryManagement
 
             using (DataTable table = db.GetProducts())
             {
+                // Erase all text from the file before writing again
                 System.IO.File.WriteAllText(@"F:\felip\Desktop\test.txt", string.Empty);
 
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"F:\felip\Desktop\test.txt", true))
                 {
-                    foreach (DataRow row in table.Rows)
-                    {
-                        foreach (var item in row.ItemArray)
-                        {
-                            file.WriteLine(item);
-                        }
-                    }
+                    Report report = new Report(table);
+                    file.WriteLine(report.GenerateReport(table));
                 }
             }
         }
