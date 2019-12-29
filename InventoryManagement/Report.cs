@@ -9,6 +9,7 @@ namespace InventoryManagement
     {
         private int _columnMaxLength = 0;
         private StringBuilder _sb = new StringBuilder();
+        DatabaseHandler db = new DatabaseHandler();
 
         public Report(DataTable table)
         {
@@ -86,6 +87,8 @@ namespace InventoryManagement
                 }
                 _sb.AppendLine();
             }
+
+            _sb.AppendFormat("\nTotal Inventory: R$ {0}", db.GetTotalInventoryPrice());
 
             return _sb.ToString();
         }

@@ -22,7 +22,7 @@ namespace InventoryManagement
         }
 
         /// <summary>
-        /// Creates a new database and its tables.
+        /// Creates a new database and table.
         /// </summary>
         /// <returns>
         /// The number of rows affected by the query.
@@ -30,19 +30,13 @@ namespace InventoryManagement
         public int CreateDatabase()
         {
             string sqlCommand = @"BEGIN TRANSACTION;
-                                CREATE TABLE IF NOT EXISTS[ProductTest](
+                                CREATE TABLE IF NOT EXISTS[Products](
                                     [idProduct] INTEGER PRIMARY KEY AUTOINCREMENT,
                                     [code]  TEXT NOT NULL UNIQUE,
                                     [description]   TEXT NOT NULL,
                                     [quantity] INTEGER NOT NULL,
-                                    [price] REAL NOT NULL
-                                );
-                                CREATE TABLE IF NOT EXISTS[Product] (
-                                    [idProduct] INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    [code]  TEXT NOT NULL UNIQUE,
-                                    [description]   TEXT NOT NULL,
-                                    [quantity] INTEGER NOT NULL,
-                                    [price] REAL NOT NULL
+                                    [price] REAL NOT NULL,
+                                    [total] REAL NOT NULL
                                 );
                                 COMMIT;";
 
@@ -125,8 +119,8 @@ namespace InventoryManagement
         /// </returns>
         public int Create (Product product)
         {
-            string query = "INSERT INTO ProductTest (code, description, quantity, price) " +
-                "VALUES (@code, @description, @quantity, @price)";
+            string query = "INSERT INTO Products (code, description, quantity, price, total) " +
+                "VALUES (@code, @description, @quantity, @price, @total)";
 
             var args = new Dictionary<string, object>()
             {
@@ -134,6 +128,7 @@ namespace InventoryManagement
                 { "@description", product.Description },
                 { "@quantity", product.Quantity },
                 { "@price", product.Price },
+                { "@total", (product.Price * product.Quantity) },
             };
 
             return ExecuteWrite(query, args);
@@ -148,7 +143,7 @@ namespace InventoryManagement
         /// </returns>
         public int Delete (Product product)
         {
-            string query = "DELETE FROM ProductTest WHERE idProduct = @id";
+            string query = "DELETE FROM Products WHERE idProduct = @id";
 
             var args = new Dictionary<string, object>()
             {
@@ -170,8 +165,8 @@ namespace InventoryManagement
         /// </returns>
         public int Update (Product product, string description, int quantity, double price)
         {
-            string query = "UPDATE productTest " +
-                "SET description = @description, quantity = @quantity, price = @price " +
+            string query = "UPDATE products " +
+                "SET description = @description, quantity = @quantity, price = @price, total = @total " +
                 "WHERE idProduct = @idProduct;";
 
             var args = new Dictionary<string, object>()
@@ -180,6 +175,7 @@ namespace InventoryManagement
                 { "@description", description },
                 { "@quantity", quantity },
                 { "@price", price },
+                { "@total", price * quantity },
             };
 
             return ExecuteWrite(query, args);
@@ -193,7 +189,7 @@ namespace InventoryManagement
         /// </returns>
         public DataTable GetProducts()
         {
-            string query = "SELECT * FROM ProductTest";
+            string query = "SELECT * FROM Products";
 
             using (var con = new SQLiteConnection($"Data Source = {this._databasePATH}"))
             {
@@ -221,7 +217,7 @@ namespace InventoryManagement
         /// </returns>
         public Product GetProductByCode(string code)
         {
-            string query = "SELECT * FROM ProductTest WHERE code = @code";
+            string query = "SELECT * FROM Products WHERE code = @code";
 
             var args = new Dictionary<string, object>()
             {
@@ -245,6 +241,27 @@ namespace InventoryManagement
             };
 
             return product;
+        }
+
+
+        /// <summary>
+        /// Retrieves the sum of all inventory prices
+        /// </summary>
+        /// <returns>
+        /// The sum of all inventory prices
+        /// </returns>
+        public double GetTotalInventoryPrice()
+        {
+            string query = "SELECT sum(total) FROM Products;";
+
+            using (var con = new SQLiteConnection($"Data Source = {this._databasePATH}"))
+            {
+                using(var command = new SQLiteCommand(query, con))
+                {
+                    con.Open();
+                    return (Double) command.ExecuteScalar();
+                }
+            }
         }
     }
 }
