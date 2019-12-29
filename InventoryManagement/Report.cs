@@ -88,6 +88,7 @@ namespace InventoryManagement
                 _sb.AppendLine();
             }
 
+            // Adds sum of total prices to bottom of report
             _sb.AppendFormat("\nTotal Inventory: R$ {0}", db.GetTotalInventoryPrice());
 
             return _sb.ToString();
