@@ -21,6 +21,12 @@ namespace InventoryManagement
             }
         }
 
+        /// <summary>
+        /// Creates a new database and its tables.
+        /// </summary>
+        /// <returns>
+        /// The number of rows affected by the query.
+        /// returns>
         public int CreateDatabase()
         {
             string sqlCommand = @"BEGIN TRANSACTION;
