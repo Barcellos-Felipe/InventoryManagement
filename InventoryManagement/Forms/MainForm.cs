@@ -14,6 +14,34 @@ namespace InventoryManagement
         public MainForm()
         {
             InitializeComponent();
+
+            // ToolTip for buttons
+            ToolTip toolTip = new ToolTip();
+
+            toolTip.SetToolTip(this.btnExit, "Close");
+            toolTip.SetToolTip(this.btnMinimize, "Minimize");
+            toolTip.SetToolTip(this.btnSearch, "Searches an item");
+            toolTip.SetToolTip(this.btnAddNew, "Adds a new Item");
+            toolTip.SetToolTip(this.btnSaveChanges, "Updates the item");
+            toolTip.SetToolTip(this.btnDelete, "Deletes the item");
+            toolTip.SetToolTip(this.btnAdd, "Adds quantity to the item");
+            toolTip.SetToolTip(this.btnSubtract, "Subtracts quantity from the item");
+            toolTip.SetToolTip(this.btnEdit, "Edits the item's price");
+            toolTip.SetToolTip(this.btnReport, "Generates a report of the inventory");
+            toolTip.SetToolTip(this.btnClear, "Clear all fields");
+
+            // Event Handlers
+            btnSearch.Click += new EventHandler(btnSearch_Click);
+            btnAddNew.Click += new EventHandler(btnAddNew_Click);
+            btnSaveChanges.Click += new EventHandler(btnSaveChanges_Click);
+            btnDelete.Click += new EventHandler(btnDelete_Click);
+            btnAdd.Click += new EventHandler(btnAdd_Click);
+            btnSubtract.Click += new EventHandler(btnSubtract_Click);
+            btnEdit.Click += new EventHandler(btnEdit_Click);
+            btnReport.Click += new EventHandler(btnReport_Click);
+            btnClear.Click += new EventHandler(btnClear_Click);
+            btnExit.Click += new EventHandler(btnExit_Click);
+            btnMinimize.Click += new EventHandler(btnMinimize_Click);
         }
 
         private void ClearFields()
@@ -198,6 +226,16 @@ namespace InventoryManagement
         {
             EditPriceForm subForm = new EditPriceForm(this);
             subForm.ShowDialog();
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

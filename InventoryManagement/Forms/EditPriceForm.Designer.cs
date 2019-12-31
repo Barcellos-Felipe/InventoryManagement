@@ -86,6 +86,7 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.label1);
             this.Name = "EditPriceForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Edit Price";
             this.ResumeLayout(false);
             this.PerformLayout();
