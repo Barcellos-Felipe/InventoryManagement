@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Data.SQLite;
 using InventoryManagement.Forms;
 using System.Data;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
+
 
 namespace InventoryManagement
 {
@@ -43,7 +41,7 @@ namespace InventoryManagement
             btnExit.Click += new EventHandler(btnExit_Click);
             btnMinimize.Click += new EventHandler(btnMinimize_Click);
         }
-
+        
         private void ClearFields()
         {
             txtCode.Text = "";

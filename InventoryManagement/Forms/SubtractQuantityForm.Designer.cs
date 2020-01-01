@@ -88,6 +88,7 @@
             this.MaximumSize = new System.Drawing.Size(229, 175);
             this.MinimumSize = new System.Drawing.Size(229, 175);
             this.Name = "SubtractQuantityForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Subtract Quantity";
             this.ResumeLayout(false);
             this.PerformLayout();
