@@ -59,18 +59,17 @@ namespace InventoryManagement
             }
             else
             {
-                Product product = new Product
-                {
-                    Code = txtCode.Text,
-                    Description = txtDescription.Text,
-                    Quantity = Convert.ToInt32(txtQuantity.Text),
-                    Price = Convert.ToDouble(txtPrice.Text)
-                };
-
                 try
                 {
+                    Product product = new Product
+                    {
+                        Code = txtCode.Text,
+                        Description = txtDescription.Text,
+                        Quantity = Convert.ToInt32(txtQuantity.Text),
+                        Price = Convert.ToDouble(txtPrice.Text)
+                    };
+                
                     DatabaseHandler db = new DatabaseHandler();
-
                     db.Create(product);
 
                     MessageBox.Show($"Item {product.Code} added succesfully");

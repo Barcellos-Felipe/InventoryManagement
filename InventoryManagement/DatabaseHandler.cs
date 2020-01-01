@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Windows.Forms;
 
 namespace InventoryManagement
 {
@@ -131,7 +132,15 @@ namespace InventoryManagement
                 { "@total", (product.Price * product.Quantity) },
             };
 
-            return ExecuteWrite(query, args);
+            try
+            {
+                return ExecuteWrite(query, args);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, $"Error: {ex.Source}");
+                return 0;
+            }
         }
 
         /// <summary>
@@ -150,7 +159,15 @@ namespace InventoryManagement
                 { "@id", product.Id }
             };
 
-            return ExecuteWrite(query, args);
+            try
+            {
+                return ExecuteWrite(query, args);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, $"Error: {ex.Source}");
+                return 0;
+            }
         }
 
         /// <summary>
@@ -178,7 +195,16 @@ namespace InventoryManagement
                 { "@total", price * quantity },
             };
 
-            return ExecuteWrite(query, args);
+            try
+            {
+                return ExecuteWrite(query, args);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, $"Error: {ex.Source}");
+                return 0;
+            }
+
         }
 
         /// <summary>
@@ -231,16 +257,24 @@ namespace InventoryManagement
                 return null;
             }
 
-            Product product = new Product
+            try
             {
-                Id = Convert.ToInt32(dataTable.Rows[0]["idProduct"]),
-                Code = Convert.ToString(dataTable.Rows[0]["code"]),
-                Description = Convert.ToString(dataTable.Rows[0]["description"]),
-                Quantity = Convert.ToInt32(dataTable.Rows[0]["quantity"]),
-                Price = Convert.ToDouble(dataTable.Rows[0]["price"])
-            };
+                Product product = new Product
+                {
+                    Id = Convert.ToInt32(dataTable.Rows[0]["idProduct"]),
+                    Code = Convert.ToString(dataTable.Rows[0]["code"]),
+                    Description = Convert.ToString(dataTable.Rows[0]["description"]),
+                    Quantity = Convert.ToInt32(dataTable.Rows[0]["quantity"]),
+                    Price = Convert.ToDouble(dataTable.Rows[0]["price"])
+                };
 
-            return product;
+                return product;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, $"Error: {ex.Source}");
+                return null;
+            }
         }
 
 
